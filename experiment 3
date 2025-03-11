@@ -1,0 +1,122 @@
+a) TCL COMMANDS
+
+
+          1.    Commit
+          
+          
+mysql> set autocommit=off;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into employee(name,salary,expense,empid) values('neha',100,50,127);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from employee;
++-------+--------+---------+-------+
+| name  | salary | expense | empid |
++-------+--------+---------+-------+
+| frina | 200.00 |   50.00 | 123   |
+| aysha | 200.00 |   50.00 | 124   |
+| ajay  | 100.00 |   20.00 | 125   |
+| neha  | 100.00 |   50.00 | 127   |
++-------+--------+---------+-------+
+4 rows in set (0.00 sec)
+
+
+
+
+          
+          2.    Rollback
+          
+          
+          
+          
+          
+mysql> insert into employee(name,salary,expense,empid)values('jahana',200,50,123);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from employee;
++--------+--------+---------+-------+
+| name   | salary | expense | empid |
++--------+--------+---------+-------+
+| jahana | 200.00 |   50.00 | 123   |
+| ajay   | 100.00 |   20.00 | 125   |
++--------+--------+---------+-------+
+2 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from employee;
++------+--------+---------+-------+
+| name | salary | expense | empid |
++------+--------+---------+-------+
+| ajay | 100.00 |   20.00 | 125   |
++------+--------+---------+-------+
+1 row in set (0.00 sec)
+
+
+
+
+          3.    Savepoint
+          
+          
+          
+          
+mysql> insert into employee(name,salary,expense,empid)values('frina',200,50,123);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> savepoint s1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into employee(name,salary,expense,empid)values('aysha',200,50,124);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> savepoint s2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into employee(name,salary,expense,empid)values('aysha',200,50,126);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> savepoint s3;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from employee;
++-------+--------+---------+-------+
+| name  | salary | expense | empid |
++-------+--------+---------+-------+
+| frina | 200.00 |   50.00 | 123   |
+| aysha | 200.00 |   50.00 | 124   |
+| ajay  | 100.00 |   20.00 | 125   |
+| aysha | 200.00 |   50.00 | 126   |
++-------+--------+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> rollback to s3;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from employee;
++-------+--------+---------+-------+
+| name  | salary | expense | empid |
++-------+--------+---------+-------+
+| frina | 200.00 |   50.00 | 123   |
+| aysha | 200.00 |   50.00 | 124   |
+| ajay  | 100.00 |   20.00 | 125   |
+| aysha | 200.00 |   50.00 | 126   |
++-------+--------+---------+-------+
+4 rows in set (0.00 sec)
+
+mysql> rollback to s2;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from employee;
++-------+--------+---------+-------+
+| name  | salary | expense | empid |
++-------+--------+---------+-------+
+| frina | 200.00 |   50.00 | 123   |
+| aysha | 200.00 |   50.00 | 124   |
+| ajay  | 100.00 |   20.00 | 125   |
++-------+--------+---------+-------+
+3 rows in set (0.00 sec)
