@@ -120,3 +120,4 @@ mysql> select * from employee;
 | ajay  | 100.00 |   20.00 | 125   |
 +-------+--------+---------+-------+
 3 rows in set (0.00 sec)
+//VERIFIED
