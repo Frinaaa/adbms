@@ -1,0 +1,130 @@
+a) ACCESSING DATABASE:  (SELECT, Filtering using WHERE, ORDER BY Clauses)
+1.    List all invoice items, avoid duplicates.
+
+
+
+mysql> select distinct quantity from invoice_item;
++----------+
+| quantity |
++----------+
+|        3 |
+|        2 |
++----------+
+2 rows in set (0.00 sec)
+
+
+2.    List the invoice details from 1st January 2024 to 31st march 2024
+
+
+mysql> select * from invoice_master where inv_date>='2024-01-01' and inv_date<='2024-03-31';
++--------+---------+------------+
+| inv_id | cust_id | inv_date   |
++--------+---------+------------+
+|    101 |   10001 | 2024-02-28 |
+|    102 |   10002 | 2024-03-01 |
+|    103 |   10003 | 2024-03-02 |
+|    104 |   10004 | 2024-03-03 |
+|    105 |   10005 | 2024-02-28 |
++--------+---------+------------+
+5 rows in set (0.00 sec)
+
+
+
+3.    List the customer details who not live in ‘tvm’.
+
+
+
+mysql> select* from customer where city!='tkm';
++-------+------+-----------+---------+------------+
+| id    | name | address   | city    | ph_no      |
++-------+------+-----------+---------+------------+
+| 10001 | abc  | abc_house | calicut | 1234567890 |
+| 10002 | xyz  | xyz_house | ekm     | 1590437612 |
+| 10003 | pqr  | fff_house | italy   |   12345656 |
+| 10004 | efg  | uvw_house | mkm     |  123456789 |
+| 10005 | abc  | abc_house | calicut | 1234567890 |
++-------+------+-----------+---------+------------+
+5 rows in set (0.01 sec)
+
+
+
+4.    List the customers who have no phone number.
+
+
+mysql> select * from customer where ph_no is null;
++-------+------+----------+-----------+-------+
+| id    | name | address  | city      | ph_no |
++-------+------+----------+-----------+-------+
+| 10006 | qqq  | ss_house | kozhikode |  NULL |
++-------+------+----------+-----------+-------+
+1 row in set (0.00 sec)
+
+
+
+
+5.    Display customer names in descending order.
+
+
+mysql> select name from customer order by name desc;
++------+
+| name |
++------+
+| xyz  |
+| qqq  |
+| pqr  |
+| efg  |
+| abc  |
+| abc  |
++------+
+6 rows in set (0.00 sec)
+
+
+
+6.    Display the customer details sorted in ascending by city and descending by names.
+
+
+
+mysql> select * from customer order by city asc,name desc;
++-------+------+-----------+-----------+------------+
+| id    | name | address   | city      | ph_no      |
++-------+------+-----------+-----------+------------+
+| 10001 | abc  | abc_house | calicut   | 1234567890 |
+| 10005 | abc  | abc_house | calicut   | 1234567890 |
+| 10002 | xyz  | xyz_house | ekm       | 1590437612 |
+| 10003 | pqr  | fff_house | italy     |   12345656 |
+| 10006 | qqq  | ss_house  | kozhikode |       NULL |
+| 10004 | efg  | uvw_house | mkm       |  123456789 |
++-------+------+-----------+-----------+------------+
+6 rows in set (0.00 sec)
+  
+  
+  
+7.    Find the customer names who have ‘e’ or ‘a’ in them and at least 3 characters in length
+
+
+mysql> select name from customer where (name like'%a%' or name like '%e%') and name like'___%'
+    -> ;
++------+
+| name |
++------+
+| abc  |
+| efg  |
+| abc  |
++------+
+3 rows in set (0.00 sec)
+
+
+
+8.    List the names of customers their names have ‘r’ in second position.
+
+
+mysql> select name from customer where name like'_b%';
++------+
+| name |
++------+
+| abc  |
+| abc  |
+| bbae |
++------+
+3 rows in set (0.00 sec)
+
