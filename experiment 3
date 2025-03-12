@@ -121,3 +121,83 @@ mysql> select * from employee;
 +-------+--------+---------+-------+
 3 rows in set (0.00 sec)
 //VERIFIED
+
+
+
+
+b) DCL COMMAND
+ Create two users user1, user2
+
+1.              GRANT
+
+
+mysql>  CREATE USER frinaa@'localhost' IDENTIFIED BY 'Frina@149';
+Query OK, 0 rows affected (0.01 sec)
+
+
+mysql> CREATE USER jahanaa@'localhost' IDENTIFIED BY 'Jahana@123';
+Query OK, 0 rows affected (0.02 sec)
+
+
+
+Give insert and select privilege to user 1 on customer table in the invoice database.
+
+
+
+mysql> GRANT SELECT, INSERT ON customer TO frinaa@'localhost';
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SHOW GRANTS FOR 'frinaa'@'localhost';
++----------------------------------------------------------------------+
+| Grants for frinaa@localhost                                          |
++----------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `frinaa`@`localhost`                           |
+| GRANT SELECT, INSERT ON `INVOICE`.`customer` TO `frinaa`@`localhost` |
++----------------------------------------------------------------------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+Give update and delete privilege to user 2 on all tables in the invoice database.
+
+
+
+
+mysql> GRANT update,delete ON *.* TO jahanaa@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+
+mysql> SHOW GRANTS FOR 'jahanaa'@'localhost';
++------------------------------------------------------+
+| Grants for jahanaa@localhost                         |
++------------------------------------------------------+
+| GRANT UPDATE, DELETE ON *.* TO `jahanaa`@`localhost` |
++------------------------------------------------------+
+1 row in set (0.00 sec)
+
+
+
+2.              REVOKE
+
+Remove delete privilege of user 2.
+
+
+mysql> REVOKE DELETE ON *.* FROM 'jahanaa'@'localhost';
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SHOW GRANTS FOR 'jahanaa'@'localhost';
++----------------------------------------------+
+| Grants for jahanaa@localhost                 |
++----------------------------------------------+
+| GRANT UPDATE ON *.* TO `jahanaa`@`localhost` |
++----------------------------------------------+
+1 row in set (0.00 sec)
+
+
+
+
+
+
+
