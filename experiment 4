@@ -128,3 +128,85 @@ mysql> select name from customer where name like'_b%';
 +------+
 3 rows in set (0.00 sec)
 
+b) OPTIMIZING DATABASE:  (GROUP BY, AGGREGATE FUNCTIONS)
+1.    List product name, price except soap on price order.
+
+
+
+mysql> select pname,price from product where pname !='soap' order by price;
++--------+-------+
+| pname  | price |
++--------+-------+
+| pen    |    10 |
+| scale  |    15 |
+| pencil |    27 |
+| book   |    37 |
++--------+-------+
+4 rows in set (0.00 sec)
+
+
+
+2.    Find minimum, maximum and average price of products.
+
+
+
+mysql> select min(price) as min_price,max(price) as max_price,avg(price) as avg_price from product;
++-----------+-----------+-----------+
+| min_price | max_price | avg_price |
++-----------+-----------+-----------+
+|        10 |        62 |   30.2000 |
++-----------+-----------+-----------+
+1 row in set (0.00 sec)
+
+
+
+
+3.    Find number of customers in each city.
+
+
+mysql> select city, count(*)as number_of_customers from customer group by city;
++-----------+---------------------+
+| city      | number_of_customers |
++-----------+---------------------+
+| calicut   |                   2 |
+| ekm       |                   1 |
+| italy     |                   1 |
+| mkm       |                   1 |
+| kozhikode |                   1 |
+| dubai     |                   2 |
++-----------+---------------------+
+6 rows in set (0.00 sec)
+
+
+4.    Find number of customers in each city, only include city with more than 3 customers.
+
+
+mysql> select city,count(*) as number_of_customers from customer group by city having count(*)>3;
++---------+---------------------+
+| city    | number_of_customers |
++---------+---------------------+
+| calicut |                   4 |
++---------+---------------------+
+1 row in set (0.00 sec)
+
+
+
+5. Show data as displayed ‘who, where’ Eg: ‘customer1 lives in ekm’
+
+mysql> select concat (name , ' lived in '  ,city)as customer_info from customer;
++------------------------+
+| customer_info          |
++------------------------+
+| abc lived in calicut   |
+| xyz lived in ekm       |
+| pqr lived in italy     |
+| efg lived in mkm       |
+| abc lived in calicut   |
+| qqq lived in kozhikode |
+| bae lived in dubai     |
+| bbae lived in dubai    |
+| frina lived in calicut |
+| fri lived in calicut   |
++------------------------+
+10 rows in set (0.00 sec)
+
