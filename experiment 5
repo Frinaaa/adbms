@@ -1,0 +1,98 @@
+1.    List the product name and price of each invoice item.
+
+
+
+mysql> select pname,price from product where pid in (select pid from invoice_item);
++--------+-------+
+| pname  | price |
++--------+-------+
+| book   |   224 |
+| soap   |   153 |
+| Bucket |    31 |
++--------+-------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+
+
+2.    List the product names, only include their purchased quantity more than 3.
+
+
+mysql> select(select pname from product where pid=invoice_item.pid)as pname from invoice_item where quantity > 3;
++--------+
+| pname  |
++--------+
+| book   |
+| soap   |
+| Bucket |
++--------+
+3 rows in set (0.00 sec)
+
+
+
+
+
+
+3.    Find the product that has no sale.
+
+
+mysql> select pname from product where pid not in (select pid from invoice_item);
++--------+
+| pname  |
++--------+
+| pencil |
+| pen    |
++--------+
+2 rows in set (0.00 sec)
+
+
+
+
+
+4.    List the customer names who purchased the items ‘soap’ and ‘book’.
+
+
+mysql> select name from customer where id in(select cust_id from invoice_master
+where inv_id in(select inv_id from invoice_item where pid in(select pid from product where pname='soap' or pname='book')));
++--------+
+| name   |
++--------+
+| rajesh |
++--------+
+1 row in set (0.00 sec)
+
+
+
+
+
+5.    Display the purchased product details of the customer ’rajesh’.
+
+
+mysql> select * from product where pid in(select pid from invoice_item where inv_id in(select inv_id from invoice_master where cust_id in(select id from customer where name='rajesh')));
++------+-------+-------+
+| pid  | pname | price |
++------+-------+-------+
+| 3333 | book  |   224 |
++------+-------+-------+
+1 row in set (0.00 sec)
+
+
+
+
+6.    List the names of all customers who have purchased at least 2 products, make sure that no duplicate names in the result
+
+
+
+mysql> select name from customer where id in(select cust_id from invoice_master
+where inv_id in (select inv_id from invoice_item group by inv_id having count(inv_id>=2)));
++--------+
+| name   |
++--------+
+| rajesh |
++--------+
+1 row in set (0.01 sec)
+
+.
