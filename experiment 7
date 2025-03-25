@@ -1,0 +1,113 @@
+OPTIMIZING DATABASE: (JOINS)
+1.     List the product name and quantity of invoice items.
+
+
+mysql> select pname,quantity from product join invoice_item on product.pid=invoi
+ce_item.pid;
++--------+----------+
+| pname  | quantity |
++--------+----------+
+| book   |       12 |
+| soap   |        5 |
+| Bucket |        6 |
++--------+----------+
+3 rows in set (0.00 sec)
+
+
+2.    Display invoice details of the transaction dated ’2023-11-30’.
+
+
+mysql> select customer.name,product.pname,invoice_item.quantity,invoice_master.inv_date FROM invoice_item JOIN invoice_master ON invoice_item.inv_id =invoice_master.inv_id JOIN customer ON invoice_master.cust_id=customer.id JOIN product ON invoice_item.pid=product.pid WHERE invoice_master.inv_date='2023-11-30';
++--------+-------+----------+------------+
+| name   | pname | quantity | inv_date   |
++--------+-------+----------+------------+
+| rajesh | book  |       12 | 2023-11-30 |
++--------+-------+----------+------------+
+1 row in set (0.01 sec)
+
+
+
+3.    Display the customer name, product name, invoice date of purchased item ‘book’.
+
+
+
+mysql> SELECT name,pname,inv_date FROM invoice_item JOIN invoice_master ON invoice_item.inv_id = invoice_master.inv_id JOIN customer on invoice_master.cust_id = customer.id JOIN product ON invoice_item.pid = product.pid WHERE pname ='book';
++--------+-------+------------+
+| name   | pname | inv_date   |
++--------+-------+------------+
+| rajesh | book  | 2023-11-30 |
++--------+-------+------------+
+1 row in set (0.00 sec)
+
+
+4.    Display all customer details and invoice details must include customer has not purchased items.
+
+mysql> SELECT customer.*, invoice_master.* FROM customer LEFT JOIN invoice_master ON customer.id = invoice_master.cust_id;
++-------+---------+------------+--------+------------+--------+---------+------------+
+| id    | name    | address    | city   | ph_no      | inv_id | cust_id | inv_date   |
++-------+---------+------------+--------+------------+--------+---------+------------+
+| 10002 | sumesh  | def house  | kannur | 9632589652 |    102 |   10002 | 2021-04-23 |
+| 10003 | ayisha  | na house   | wyn    | 9301234567 |    106 |   10003 | 2023-05-12 |
+| 10005 | rajesh  | mno house  | wyn    | 9712346895 |    105 |   10005 | 2023-11-30 |
+| 10006 | radhesh | xyz house  | tvm    | 9656666685 |   NULL |    NULL | NULL       |
+| 10007 | kalyani | cute house | ekm    | 9876543210 |   NULL |    NULL | NULL       |
+| 10008 | sitha   | baby house | ekm    | 9696363610 |    107 |   10008 | 2022-01-31 |
++-------+---------+------------+--------+------------+--------+---------+------------+
+6 rows in set (0.00 sec)
+
+
+
+ OPTIMIZING DATABASE: (Using Set, arithmetic, logical and special operators)
+
+
+1.        Display customer_id, city  who lives either in ‘wyn’ or in ‘kannur’
+
+
+mysql> SELECT id, city FROM customer WHERE city IN ('wyn', 'kannur');
++-------+--------+
+| id    | city   |
++-------+--------+
+| 10002 | kannur |
+| 10003 | wyn    |
+| 10005 | wyn    |
++-------+--------+
+3 rows in set (0.01 sec)
+
+
+2.       Display product details with an updated price amount(new price= old price+5rs)
+
+
+mysql> SELECT *, (price + 5) AS new_price FROM product;
++------+--------+-------+-----------+
+| pid  | pname  | price | new_price |
++------+--------+-------+-----------+
+| 1111 | pencil |    51 |        56 |
+| 2222 | pen    |    71 |        76 |
+| 3333 | book   |   224 |       229 |
+| 4444 | soap   |   153 |       158 |
+| 5555 | Bucket |    31 |        36 |
++------+--------+-------+-----------+
+5 rows in set (0.00 sec)
+
+3.    Display customer details who doesn’t have phone number and lives in ‘tvm’ city (use logical operators)
+
+mysql> SELECT * FROM customer WHERE city = 'tvm' AND ph_no IS NULL;
++-------+---------+-----------+------+-------+
+| id    | name    | address   | city | ph_no |
++-------+---------+-----------+------+-------+
+| 10006 | radhesh | xyz house | tvm  |  NULL |
++-------+---------+-----------+------+-------+
+1 row in set (0.00 sec)
+
+4.    List the product names if it finds any records in the invoice items table has quantity =5(use special operators)
+
+
+
+
+mysql> select pname from product where pid in(select pid from invoice_item where quantity = 5);
++-------+
+| pname |
++-------+
+| soap  |
++-------+
+1 row in set (0.00 sec)
