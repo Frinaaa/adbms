@@ -1,0 +1,110 @@
+1.      Create a procedure to display all tables in the invoice database.
+
+
+mysql> create procedure alldata()
+    -> begin
+    -> select * from customer;
+    -> select * from product;
+    -> select * from invoice_master;
+    -> select * from invoice_item;
+    -> end
+    -> //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call alldata//
++-------+-------+-----------+-----------+------------+
+| id    | name  | address   | city      | ph_no      |
++-------+-------+-----------+-----------+------------+
+| 10001 | abc   | abc_house | calicut   | 1234567890 |
+| 10002 | xyz   | xyz_house | ekm       | 1590437612 |
+| 10003 | pqr   | fff_house | italy     |   12345656 |
+| 10004 | efg   | uvw_house | mkm       |  123456789 |
+| 10005 | abc   | abc_house | calicut   | 1234567890 |
+| 10006 | qqq   | ss_house  | kozhikode |       NULL |
+| 10007 | bae   | sh_house  | dubai     |     566232 |
+| 10008 | bbae  | sh_house  | dubai     |    5662323 |
+| 10009 | frina | pv_house  | calicut   |    1232131 |
+| 10010 | fri   | pp_house  | calicut   |    1232131 |
++-------+-------+-----------+-----------+------------+
+10 rows in set (0.00 sec)
+
++-----+--------+-------+
+| pid | pname  | price |
++-----+--------+-------+
+| 101 | pen    |    10 |
+| 102 | pencil |    27 |
+| 103 | soap   |    62 |
+| 104 | book   |    37 |
+| 105 | scale  |    15 |
++-----+--------+-------+
+5 rows in set (0.01 sec)
+
++--------+---------+------------+
+| inv_id | cust_id | inv_date   |
++--------+---------+------------+
+|    101 |   10001 | 2024-02-28 |
+|    102 |   10002 | 2024-03-01 |
+|    103 |   10003 | 2024-03-02 |
+|    104 |   10004 | 2024-03-03 |
+|    105 |   10005 | 2024-02-28 |
++--------+---------+------------+
+5 rows in set (0.01 sec)
+
++--------+------+----------+
+| inv_id | pid  | quantity |
++--------+------+----------+
+|    102 |  104 |        3 |
+|    104 |  103 |        2 |
+|    105 |  102 |        3 |
++--------+------+----------+
+3 rows in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+
+
+2.      Create a procedure to find greatest of 2 numbers.
+
+mysql> create procedure greatest(a int, b int)
+    -> begin
+    -> declare x,y int;
+    -> set x=a;
+    -> set y=b;
+    -> if x>y then
+    -> select x as 'greater';
+    -> else
+    -> select y as 'greater';
+    -> end if;
+    -> end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call greatest(12,78)//
++---------+
+| greater |
++---------+
+|      78 |
++---------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+
+3.      Create a procedure to display invoice details of a particular customer.
+
+ mysql> create procedure invoice_detail(N varchar(20)) begin select customer.name,invoice_master.inv_id,invoice_master.inv_date,product.pname,invoice_item.pid,invoice_item.quantity from invoice_item join invoice_master on invoice_master.inv_id=invoice_item.inv_id join product on product.pid=invoice_item.pid join customer on customer.id=invoice_master.cust_id where customer.name =N; end//
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> call invoice_detail("efg")//
++------+--------+------------+-------+------+----------+
+| name | inv_id | inv_date   | pname | pid  | quantity |
++------+--------+------------+-------+------+----------+
+| efg  |    104 | 2024-03-03 | soap  |  103 |        2 |
++------+--------+------------+-------+------+----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+
+
+
+
