@@ -1,0 +1,52 @@
+1.      Create a trigger to handle updates to the customer table.
+
+mysql> delimiter //
+
+mysql> create table cust(cid int primary key,cname varchar(20),address varchar(20),place varchar(20),num int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> create trigger cust_trig after update on customer for each row begin insert into cust set cid =old.id, cname =old.name,address=old.address,place=old.city,num=old.ph_no;
+    -> END //
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> update customer set city='idukki' where id='10006'//
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from cust//
++-------+-------+----------+-----------+------+
+| cid   | cname | address  | place     | num  |
++-------+-------+----------+-----------+------+
+| 10006 | qqq   | ss_house | kozhikode | NULL |
++-------+-------+----------+-----------+------+
+1 row in set (0.00 sec)
+
+
+2.      Create a trigger to handle inserts to the product relation ( if price < 5 the set price to 10).
+
+mysql> create trigger prod_ins
+    -> before insert on product
+    -> for each row begin
+    -> if new.price <5 then
+    -> set new.price=10;
+    -> end if;
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+
+mysql> insert into product values(106,'eraser',4) //
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from product//
++-----+--------+-------+
+| pid | pname  | price |
++-----+--------+-------+
+| 101 | pen    |    10 |
+| 102 | pencil |    27 |
+| 103 | soap   |    62 |
+| 104 | book   |    37 |
+| 105 | scale  |    15 |
+| 106 | eraser |    10 |
++-----+--------+-------+
+6 rows in set (0.00 sec)
+
