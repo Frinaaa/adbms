@@ -1,0 +1,99 @@
+1.      Write a MongoDB query to create an INVOICE database and collections (CUSTOMER, PRODUCT) and its corresponding documents.
+
+
+
+
+use invoice;
+switched to db invoice
+
+invoice> db.CUSTOMER.insertMany([{cust_id:101,name:"frina",ph_no:9746887331,city:"calicut"},{cust_id:102,name:"aysha",ph_no:9746727217,city:"payyanakal"},{cust_id:103,name:"jahana",ph_no:9768453212,city:"vadakara"}]) 
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67fe2c96f7473387b4ef634f'),
+    '1': ObjectId('67fe2c96f7473387b4ef6350'),
+    '2': ObjectId('67fe2c96f7473387b4ef6351')
+  }
+}
+invoice> db.PRODUCT.insertMany([{p_id:01,pname:"pen",price:15},{p_id:02,pname:"book",price:45}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('67fe2cb1f7473387b4ef6352'),
+    '1': ObjectId('67fe2cb1f7473387b4ef6353')
+  }
+}
+
+
+2.      Write a MongoDB query to find all documents from the collection CUSTOMER
+
+
+invoice> show collections
+CUSTOMER
+PRODUCT
+invoice> db.CUSTOMER.find()
+[
+  {
+    _id: ObjectId('67fe2ef2f7473387b4ef6354'),
+    cust_id: 101,
+    name: 'frina',
+    ph_no: 9746887331,
+    city: 'calicut'
+  },
+  {
+    _id: ObjectId('67fe2ef2f7473387b4ef6355'),
+    cust_id: 102,
+    name: 'aysha',
+    ph_no: 9746727217,
+    city: 'payyanakal'
+  },
+  {
+    _id: ObjectId('67fe2ef2f7473387b4ef6356'),
+    cust_id: 103,
+    name: 'jahana',
+    ph_no: 9768453212,
+    city: 'vadakara'
+  }
+]
+
+3.      Write a MongoDB query to update the city in the collection CUSTOMER.
+
+invoice> db.CUSTOMER.update({cust_id:103},{$set:{city:"kattangal"}})
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+
+invoice> db.CUSTOMER.find()
+[
+  {
+    _id: ObjectId('67fe2ef2f7473387b4ef6354'),
+    cust_id: 101,
+    name: 'frina',
+    ph_no: 9746887331,
+    city: 'calicut'
+  },
+  {
+    _id: ObjectId('67fe2ef2f7473387b4ef6355'),
+    cust_id: 102,
+    name: 'aysha',
+    ph_no: 9746727217,
+    city: 'payyanakal'
+  },
+  {
+    _id: ObjectId('67fe2ef2f7473387b4ef6356'),
+    cust_id: 103,
+    name: 'jahana',
+    ph_no: 9768453212,
+    city: 'kattangal'
+  }
+]
+
+4.      Write a MongoDB query to delete the first matched document whose city is “Calicut”.
+
+invoice> db.CUSTOMER.deleteOne({city:"kattangal" })
+{ acknowledged: true, deletedCount: 1 }
