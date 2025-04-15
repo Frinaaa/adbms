@@ -93,7 +93,8 @@ invoice> db.CUSTOMER.find()
   }
 ]
 
-4.      Write a MongoDB query to delete the first matched document whose city is “Calicut”.
+4.      Write a MongoDB query to delete the first matched document whose city is “kattangal”.
 
 invoice> db.CUSTOMER.deleteOne({city:"kattangal" })
 { acknowledged: true, deletedCount: 1 }
+//VERIFIED
