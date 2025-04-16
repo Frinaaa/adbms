@@ -1,0 +1,52 @@
+1.      Write a MongoDB query to display the customer documents having city ‘calicut’,’payyanakal’.
+
+
+invoice> db.CUSTOMER.find({city:{$in:["calicut","payyanakal"]}})
+[
+  {
+    _id: ObjectId('67fe2ef2f7473387b4ef6354'),
+    cust_id: 101,
+    name: 'frina',
+    ph_no: 9746887331,
+    city: 'calicut'
+  },
+  {
+    _id: ObjectId('67fe2ef2f7473387b4ef6355'),
+    cust_id: 102,
+    name: 'aysha',
+    ph_no: 9746727217,
+    city: 'payyanakal'
+  }
+]
+
+2.     Write a MongoDB query to display all product documents their price >10.
+
+invoice> db.PRODUCT.find({price:{$gt: 10}})
+[
+  {
+    _id: ObjectId('67fe2efbf7473387b4ef6357'),
+    p_id: 1,
+    pname: 'pen',
+    price: 15
+  },
+  {
+    _id: ObjectId('67fe2efbf7473387b4ef6358'),
+    p_id: 2,
+    pname: 'book',
+    price: 45
+  }
+]
+
+
+3.     Write a MongoDB query to find customer documents who not live in ‘calicut'.
+
+invoice> db.CUSTOMER.find({city:{$nin:["calicut"]}})
+[
+  {
+    _id: ObjectId('67fe2ef2f7473387b4ef6355'),
+    cust_id: 102,
+    name: 'aysha',
+    ph_no: 9746727217,
+    city: 'payyanakal'
+  }
+]
