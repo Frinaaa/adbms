@@ -91,3 +91,4 @@ invoice> db.CUSTOMER.aggregate([ { $lookup: { from: "PRODUCT", localField: "pid"
   { name: 'shana', pname: [ 'pen' ], price: [ 15 ] },
   { name: 'shifa', pname: [ 'book' ], price: [ 45 ] }
 ]
+//VERIFIED
