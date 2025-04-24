@@ -1,0 +1,188 @@
+REPLICATION
+
+step 1:
+mkdir -p node1 node2 node3
+
+step 2:
+Terminal 1:
+mongod --replSet rs0 --port 30001 --dbpath ./node1 --bind_ip localhost
+Terminal 2:
+ mongod --replSet rs0 --port 27018 --dbpath ./node2 --bind_ip localhost
+Terminal 3:
+ mongod --replSet rs0 --port 27019 --dbpath ./node3 --bind_ip localhost
+ 
+step 3:
+Terminal 4:
+mongosh --port 27017
+
+step 4:
+rs.initiate({
+ _id: "rs0",
+ members: [
+ { _id: 0, host: "localhost:30001" },
+ { _id: 1, host: "localhost:27018" },
+ { _id: 2, host: "localhost:27019" }
+ ]
+ })
+ 
+ output:{ ok: 1 }
+ 
+ 
+ step 5:
+ rs.status()
+ 
+ output:
+ 
+  set: 'rs0',
+  date: ISODate('2025-04-24T09:19:07.781Z'),
+  myState: 1,
+  term: Long('1'),
+  syncSourceHost: '',
+  syncSourceId: -1,
+  heartbeatIntervalMillis: Long('2000'),
+  majorityVoteCount: 2,
+  writeMajorityCount: 2,
+  votingMembersCount: 3,
+  writableVotingMembersCount: 3,
+  optimes: {
+    lastCommittedOpTime: { ts: Timestamp({ t: 1745486344, i: 1 }), t: Long('1') },
+    lastCommittedWallTime: ISODate('2025-04-24T09:19:04.155Z'),
+    readConcernMajorityOpTime: { ts: Timestamp({ t: 1745486344, i: 1 }), t: Long('1') },
+    appliedOpTime: { ts: Timestamp({ t: 1745486344, i: 1 }), t: Long('1') },
+    durableOpTime: { ts: Timestamp({ t: 1745486344, i: 1 }), t: Long('1') },
+    lastAppliedWallTime: ISODate('2025-04-24T09:19:04.155Z'),
+    lastDurableWallTime: ISODate('2025-04-24T09:19:04.155Z')
+  },
+  lastStableRecoveryTimestamp: Timestamp({ t: 1745486313, i: 1 }),
+  electionCandidateMetrics: {
+    lastElectionReason: 'electionTimeout',
+    lastElectionDate: ISODate('2025-04-24T09:18:44.070Z'),
+    electionTerm: Long('1'),
+    lastCommittedOpTimeAtElection: { ts: Timestamp({ t: 1745486313, i: 1 }), t: Long('-1') },
+    lastSeenOpTimeAtElection: { ts: Timestamp({ t: 1745486313, i: 1 }), t: Long('-1') },
+    numVotesNeeded: 2,
+    priorityAtElection: 1,
+    electionTimeoutMillis: Long('10000'),
+    numCatchUpOps: Long('0'),
+    newTermStartDate: ISODate('2025-04-24T09:18:44.136Z'),
+    wMajorityWriteAvailabilityDate: ISODate('2025-04-24T09:18:44.674Z')
+  },
+  members: [
+    {
+      _id: 0,
+      name: 'localhost:30001',
+      health: 1,
+      state: 1,
+      stateStr: 'PRIMARY',
+      uptime: 369,
+      optime: { ts: Timestamp({ t: 1745486344, i: 1 }), t: Long('1') },
+      optimeDate: ISODate('2025-04-24T09:19:04.000Z'),
+      lastAppliedWallTime: ISODate('2025-04-24T09:19:04.155Z'),
+      lastDurableWallTime: ISODate('2025-04-24T09:19:04.155Z'),
+      syncSourceHost: '',
+      syncSourceId: -1,
+      infoMessage: 'Could not find member to sync from',
+      electionTime: Timestamp({ t: 1745486324, i: 1 }),
+      electionDate: ISODate('2025-04-24T09:18:44.000Z'),
+      configVersion: 1,
+      configTerm: 1,
+      self: true,
+      lastHeartbeatMessage: ''
+    },
+    {
+      _id: 1,
+      name: 'localhost:27018',
+      health: 1,
+      state: 2,
+      stateStr: 'SECONDARY',
+      uptime: 34,
+      optime: { ts: Timestamp({ t: 1745486344, i: 1 }), t: Long('1') },
+      optimeDurable: { ts: Timestamp({ t: 1745486344, i: 1 }), t: Long('1') },
+      optimeDate: ISODate('2025-04-24T09:19:04.000Z'),
+      optimeDurableDate: ISODate('2025-04-24T09:19:04.000Z'),
+      lastAppliedWallTime: ISODate('2025-04-24T09:19:04.155Z'),
+      lastDurableWallTime: ISODate('2025-04-24T09:19:04.155Z'),
+      lastHeartbeat: ISODate('2025-04-24T09:19:06.106Z'),
+      lastHeartbeatRecv: ISODate('2025-04-24T09:19:07.106Z'),
+      pingMs: Long('0'),
+      lastHeartbeatMessage: '',
+      syncSourceHost: 'localhost:30001',
+      syncSourceId: 0,
+      infoMessage: '',
+      configVersion: 1,
+      configTerm: 1
+    },
+    {
+      _id: 2,
+      name: 'localhost:27019',
+      health: 1,
+      state: 2,
+      stateStr: 'SECONDARY',
+      uptime: 34,
+      optime: { ts: Timestamp({ t: 1745486344, i: 1 }), t: Long('1') },
+      optimeDurable: { ts: Timestamp({ t: 1745486344, i: 1 }), t: Long('1') },
+      optimeDate: ISODate('2025-04-24T09:19:04.000Z'),
+      optimeDurableDate: ISODate('2025-04-24T09:19:04.000Z'),
+      lastAppliedWallTime: ISODate('2025-04-24T09:19:04.155Z'),
+      lastDurableWallTime: ISODate('2025-04-24T09:19:04.155Z'),
+      lastHeartbeat: ISODate('2025-04-24T09:19:06.104Z'),
+      lastHeartbeatRecv: ISODate('2025-04-24T09:19:07.106Z'),
+      pingMs: Long('0'),
+      lastHeartbeatMessage: '',
+      syncSourceHost: 'localhost:30001',
+      syncSourceId: 0,
+      infoMessage: '',
+      configVersion: 1,
+      configTerm: 1
+    }
+  ],
+  ok: 1,
+  '$clusterTime': {
+    clusterTime: Timestamp({ t: 1745486344, i: 1 }),
+    signature: {
+      hash: Binary.createFromBase64('AAAAAAAAAAAAAAAAAAAAAAAAAAA=', 0),
+      keyId: Long('0')
+    }
+  },
+  operationTime: Timestamp({ t: 1745486344, i: 1 })
+}
+
+
+step 6:
+db.customers.insertOne({
+...  name: "Anjana",
+...  city: "ekm",
+...  age: 30
+...  })
+
+
+output:
+{
+  acknowledged: true,
+  insertedId: ObjectId('680a036c0b78c905d0ef634b')
+}
+
+step 7:
+in terminal 5:
+db.customers.find()
+
+output:
+{
+    _id: ObjectId('680a036c0b78c905d0ef634b'),
+    name: 'Anjana',
+    city: 'ekm',
+    age: 30
+  }
+
+step 8:
+in terminal 6:
+mongosh --port 30001
+db.customers.find().pretty()
+
+output: {
+    _id: ObjectId('680a036c0b78c905d0ef634b'),
+    name: 'Anjana',
+    city: 'ekm',
+    age: 30
+  }
+
