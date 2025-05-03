@@ -1,0 +1,370 @@
+(base) ksb@ksb-H410M-H-V2:~$ cd frina
+(base) ksb@ksb-H410M-H-V2:~/frina$ cd adbms
+
+(base) ksb@ksb-H410M-H-V2:~/frina/adbms$ mongosh
+
+
+PART A: Creating Collection and Inserting Documents
+
+Create a database named collegeDB.
+Create a collection named students.
+Insert at least 2 student documents with the following fields:
+ _id (auto or manual)
+  name
+  age
+  department
+  marks (object with math, science, english)
+  admissionYear
+
+test> use collegedb
+switched to db collegedb
+collegedb> db.students.insertMany([{id:01,name:"frina",age:21,department:"computer",marks:{math:18,science:20,english:40},ad_year:2024},{id:02,name:"rina",age:21,department:"computer",marks:{math:28,science:40,english:20},ad_year:2025}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6815b1fb02fb948f6aef634b'),
+    '1': ObjectId('6815b1fb02fb948f6aef634c')
+  }
+}
+
+
+PART B: CRUD Operations
+
+
+1. Display all documents in the students collection.
+
+collegedb> db.students.find();
+[
+  {
+    _id: ObjectId('6815b1fb02fb948f6aef634b'),
+    id: 1,
+    name: 'frina',
+    age: 21,
+    department: 'computer',
+    marks: { math: 18, science: 20, english: 40 },
+    ad_year: 2024
+  },
+  {
+    _id: ObjectId('6815b1fb02fb948f6aef634c'),
+    id: 2,
+    name: 'rina',
+    age: 21,
+    department: 'computer',
+    marks: { math: 28, science: 40, english: 20 },
+    ad_year: 2025
+  }
+]
+
+
+collegedb> show collections
+students
+
+2. Display students whose department is "Computer ".
+
+collegedb> db.students.find({department:"computer"});
+[
+  {
+    _id: ObjectId('6815b1fb02fb948f6aef634b'),
+    id: 1,
+    name: 'frina',
+    age: 21,
+    department: 'computer',
+    marks: { math: 18, science: 20, english: 40 },
+    ad_year: 2024
+  },
+  {
+    _id: ObjectId('6815b1fb02fb948f6aef634c'),
+    id: 2,
+    name: 'rina',
+    age: 21,
+    department: 'computer',
+    marks: { math: 28, science: 40, english: 20 },
+    ad_year: 2025
+  }
+]
+
+
+3. Update the age of a student named "rina" to 22.
+
+collegedb> db.students.update({name:"rina"},{$set:{age:22}})
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+collegedb> db.students.find();
+[
+  {
+    _id: ObjectId('6815b1fb02fb948f6aef634b'),
+    id: 1,
+    name: 'frina',
+    age: 21,
+    department: 'computer',
+    marks: { math: 18, science: 20, english: 40 },
+    ad_year: 2024
+  },
+  {
+    _id: ObjectId('6815b1fb02fb948f6aef634c'),
+    id: 2,
+    name: 'rina',
+    age: 22,
+    department: 'computer',
+    marks: { math: 28, science: 40, english: 20 },
+    ad_year: 2025
+  }
+]
+
+4. Add a new field attendance: 95 to the student named "rina".
+
+collegedb> db.students.updateOne({name:"rina"},{$set:{attendence:95}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+collegedb> db.students.find();
+[
+  {
+    _id: ObjectId('6815b1fb02fb948f6aef634b'),
+    id: 1,
+    name: 'frina',
+    age: 21,
+    department: 'computer',
+    marks: { math: 18, science: 20, english: 40 },
+    ad_year: 2024
+  },
+  {
+    _id: ObjectId('6815b1fb02fb948f6aef634c'),
+    id: 2,
+    name: 'rina',
+    age: 22,
+    department: 'computer',
+    marks: { math: 28, science: 40, english: 20 },
+    ad_year: 2025,
+    attendence: 95
+  }
+]
+
+5. Delete a student document where the name is "frina".
+
+collegedb> db.students.deleteOne({name:"frina"})
+{ acknowledged: true, deletedCount: 1 }
+collegedb> db.students.find();
+[
+  {
+    _id: ObjectId('6815b1fb02fb948f6aef634c'),
+    id: 2,
+    name: 'rina',
+    age: 22,
+    department: 'computer',
+    marks: { math: 28, science: 40, english: 20 },
+    ad_year: 2025,
+    attendence: 95
+  }
+]
+
+
+Part C: Data Retrieval with Conditions
+
+
+
+
+1. Retrieve names of students who scored more than 20 in math.
+collegedb> db.students.find({"marks.math":{$gt:20}},{name:1,_id:0});
+
+[ { name: 'rina' } ]
+
+
+//making changes for purpose of question
+
+collegedb> db.students.updateOne({name:"rina"},{$set:{ad_year:"2025"}});
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+collegedb> db.students.find();
+[
+  {
+    _id: ObjectId('6815b1fb02fb948f6aef634c'),
+    id: 2,
+    name: 'rina',
+    age: 22,
+    department: 'computer',
+    marks: { math: 28, science: 40, english: 20 },
+    ad_year: '2025',
+    attendence: 95
+  }
+]
+
+
+
+2. List students admitted in the year 2025. 
+
+collegedb> db.students.find({ad_year:{$regex:/^2025/}});
+[
+  {
+    _id: ObjectId('6815b1fb02fb948f6aef634c'),
+    id: 2,
+    name: 'rina',
+    age: 22,
+    department: 'computer',
+    marks: { math: 28, science: 40, english: 20 },
+    ad_year: '2025',
+    attendence: 95
+  }
+]
+
+
+test> use students;
+switched to db students
+
+//inserting new datas for purpose of question criteria's
+
+students> db.students.insertMany([{id:03,name:"frina",age:21,department:"maths",marks:{math:28,science:50,english:30},ad_year:2024},{id:04,name:"rana",age:23,department:"stati",marks:{math:63,science:40,english:20},ad_year:2021}]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6815b73b096a897fc8ef634b'),
+    '1': ObjectId('6815b73b096a897fc8ef634c')
+  }
+}
+students> db.students.find();
+[
+  {
+    _id: ObjectId('6815b73b096a897fc8ef634b'),
+    id: 3,
+    name: 'frina',
+    age: 21,
+    department: 'maths',
+    marks: { math: 28, science: 50, english: 30 },
+    ad_year: 2024
+  },
+  {
+    _id: ObjectId('6815b73b096a897fc8ef634c'),
+    id: 4,
+    name: 'rana',
+    age: 23,
+    department: 'stati',
+    marks: { math: 63, science: 40, english: 20 },
+    ad_year: 2021
+  }
+]
+
+
+
+3. Display students sorted by name in ascending order.
+
+students> db.students.find().sort({name:1});
+[
+  {
+    _id: ObjectId('6815b73b096a897fc8ef634b'),
+    id: 3,
+    name: 'frina',
+    age: 21,
+    department: 'maths',
+    marks: { math: 28, science: 50, english: 30 },
+    ad_year: 2024
+  },
+  {
+    _id: ObjectId('6815b73b096a897fc8ef634c'),
+    id: 4,
+    name: 'rana',
+    age: 23,
+    department: 'stati',
+    marks: { math: 63, science: 40, english: 20 },
+    ad_year: 2021
+  }
+]
+
+
+4. Count the number of students in each department.
+
+students> db.students.aggregate([{$group:{_id:"$department",count:{$sum:1}}}]);
+[ { _id: 'stati', count: 1 }, { _id: 'maths', count: 1 } ]
+  
+  
+  
+  Part D: Aggregation
+  
+  
+1. Use $project to display only name and total marks (sum of all subjects).
+
+students> db.students.aggregate([{$project:{name:1,total_marks:{$add:["$marks.math","$marks.science","$marks.english"]}}}]);
+[
+  {
+    _id: ObjectId('6815b73b096a897fc8ef634b'),
+    name: 'frina',
+    total_marks: 108
+  },
+  {
+    _id: ObjectId('6815b73b096a897fc8ef634c'),
+    name: 'rana',
+    total_marks: 123
+  }
+]
+
+
+2. Use $match and $group to calculate the average math marks department-wise.
+
+students> db.students.aggregate([{$match:{"marks.math":{$exists:true}}},{$group:{_id:"$department",avg_math_marks:{$avg:"$marks.math"}}}]);
+[
+  { _id: 'stati', avg_math_marks: 63 },
+  { _id: 'maths', avg_math_marks: 28 }
+]
+
+3. Use $sort to display students based on their science marks in descending order.
+
+students> db.students.aggregate([
+   {
+     $sort: { "marks.science": -1 }  // Sort by science marks in descending order
+  }
+ ]);
+[
+  {
+    _id: ObjectId('6815b73b096a897fc8ef634b'),
+    id: 3,
+    name: 'frina',
+    age: 21,
+    department: 'maths',
+    marks: { math: 28, science: 50, english: 30 },
+    ad_year: 2024
+  },
+  {
+    _id: ObjectId('6815b73b096a897fc8ef634c'),
+    id: 4,
+    name: 'rana',
+    age: 23,
+    department: 'stati',
+    marks: { math: 63, science: 40, english: 20 },
+    ad_year: 2021
+  }
+]
+
+
+4.Use $lookup to join students with a new collection named internships, and display:
+name, department, internship_company, and duration
+(Assume students.student_id = internships.student_id)
+
+students> db.students.aggregate([ { $lookup: { from: "internship", localField: "id", foreignField: "std_id", as: "internship_details" } }, { $unwind: "$internship_details" }, { $project: { name: 1, department: 1, internship_company: "$internship_details.company", duration: "$internship_details.duration",_id: 0 }}]);
+[
+  {
+    name: 'frina',
+    department: 'maths',
+    internship_company: 'google',
+    duration: '6 months'
+  },
+  {
+    name: 'rana',
+    department: 'stati',
+    internship_company: 'microsoft',
+    duration: '12 months'
+  }
+]
